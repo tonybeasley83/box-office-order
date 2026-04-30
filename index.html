@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box Office Order</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <header class="site-header">
+      <div class="header-inner">
+        <h1 class="site-title">BOX OFFICE ORDER</h1>
+        <p class="site-subtitle">Drag each film to its box office rank</p>
+      </div>
+    </header>
+
+    <!-- Loading -->
+    <div id="loading" class="state-loading">
+      <div class="spinner"></div>
+      <p>Loading today's films&hellip;</p>
+    </div>
+
+    <!-- Error -->
+    <div id="error-state" class="state-error hidden">
+      <p class="error-icon">🎬</p>
+      <p class="error-msg">No game data found.</p>
+      <p class="error-hint">Run <code>node scripts/generate-data.mjs</code> to populate the game.</p>
+    </div>
+
+    <!-- Game -->
+    <main id="game" class="state-game hidden">
+      <div class="game-header">
+        <div class="weekend-badge">
+          <span class="badge-label">WEEKEND OF</span>
+          <span id="weekend-date" class="badge-date"></span>
+        </div>
+        <p class="instructions">
+          Drag each film to its rank — <strong class="accent">#1</strong> highest grossing to <strong class="accent">#5</strong> lowest
+        </p>
+      </div>
+
+      <!-- Attempt + score tracker (shown after first submission) -->
+      <div id="attempt-bar" class="attempt-bar">
+        <span id="attempt-label" class="attempt-label">ATTEMPT 1</span>
+        <span id="score-running" class="score-running">0 / 15 pts</span>
+      </div>
+
+      <div id="game-layout" class="game-layout">
+
+        <!-- Left: ranked drop zones -->
+        <div id="slots-col" class="slots-col" aria-label="Ranking slots">
+          <!-- Slots injected by JS -->
+        </div>
+
+        <!-- Right: film cards to drag -->
+        <div id="pool-col" class="pool-col" aria-label="Films to rank">
+          <!-- Film cards injected by JS -->
+        </div>
+
+      </div>
+
+      <div class="action-row">
+        <button id="submit-btn" class="btn-primary" disabled>SUBMIT RANKING</button>
+        <span id="submit-hint" class="submit-hint">Place all 5 films to submit</span>
+      </div>
+    </main>
+
+    <!-- Results -->
+    <div id="results" class="state-results hidden">
+      <div class="results-header">
+        <div class="score-block">
+          <span id="score-num" class="score-num">0</span>
+          <span class="score-denom">/15</span>
+        </div>
+        <div class="weekend-badge">
+          <span class="badge-label">WEEKEND OF</span>
+          <span id="results-date" class="badge-date"></span>
+        </div>
+      </div>
+
+      <div id="attempt-history" class="attempt-history"></div>
+
+      <div id="results-list" class="results-list" role="list"></div>
+
+      <div class="action-row">
+        <button id="share-btn" class="btn-secondary">SHARE RESULT</button>
+        <div id="share-toast" class="toast hidden">Copied to clipboard!</div>
+      </div>
+
+      <p class="come-back">Come back tomorrow for a new weekend!</p>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+{
+  "weekends": [
+    {
+      "id": "1982-06-11",
+      "label": "June 11–13, 1982",
+      "films": [
+        { "rank": 1, "title": "E.T. the Extra-Terrestrial",          "year": 1982, "weekendGross": 11911430 },
+        { "rank": 2, "title": "Star Trek II: The Wrath of Khan",      "year": 1982, "weekendGross": 9406638  },
+        { "rank": 3, "title": "Rocky III",                            "year": 1982, "weekendGross": 8222095  },
+        { "rank": 4, "title": "Poltergeist",                          "year": 1982, "weekendGross": 5379673  },
+        { "rank": 5, "title": "Grease 2",                             "year": 1982, "weekendGross": 4645411  }
+      ]
+    },
+    {
+      "id": "1983-05-27",
+      "label": "May 27–29, 1983",
+      "films": [
+        { "rank": 1, "title": "Return of the Jedi",                   "year": 1983, "weekendGross": 23019618 },
+        { "rank": 2, "title": "Blue Thunder",                         "year": 1983, "weekendGross": 6239999  },
+        { "rank": 3, "title": "Flashdance",                           "year": 1983, "weekendGross": 4665930  },
+        { "rank": 4, "title": "Spacehunter: Adventures in the Forbidden Zone", "year": 1983, "weekendGross": 4576732 },
+        { "rank": 5, "title": "Breathless",                           "year": 1983, "weekendGross": 3367492  }
+      ]
+    },
+    {
+      "id": "1984-05-25",
+      "label": "May 25–27, 1984",
+      "films": [
+        { "rank": 1, "title": "Indiana Jones and the Temple of Doom", "year": 1984, "weekendGross": 25337110 },
+        { "rank": 2, "title": "The Natural",                          "year": 1984, "weekendGross": 6920974  },
+        { "rank": 3, "title": "Breakin'",                             "year": 1984, "weekendGross": 4128428  },
+        { "rank": 4, "title": "Romancing the Stone",                  "year": 1984, "weekendGross": 4051420  },
+        { "rank": 5, "title": "Sixteen Candles",                      "year": 1984, "weekendGross": 2891806  }
+      ]
+    },
+    {
+      "id": "1985-07-05",
+      "label": "July 5–7, 1985",
+      "films": [
+        { "rank": 1, "title": "Back to the Future",                   "year": 1985, "weekendGross": 11332134 },
+        { "rank": 2, "title": "Pale Rider",                           "year": 1985, "weekendGross": 7032807  },
+        { "rank": 3, "title": "Rambo: First Blood Part II",           "year": 1985, "weekendGross": 6428108  },
+        { "rank": 4, "title": "Cocoon",                               "year": 1985, "weekendGross": 6333285  },
+        { "rank": 5, "title": "The Emerald Forest",                   "year": 1985, "weekendGross": 4345150  }
+      ]
+    },
+    {
+      "id": "1986-05-23",
+      "label": "May 23–25, 1986",
+      "films": [
+        { "rank": 1, "title": "Cobra",                                "year": 1986, "weekendGross": 15652147 },
+        { "rank": 2, "title": "Poltergeist II: The Other Side",       "year": 1986, "weekendGross": 12357190 },
+        { "rank": 3, "title": "Top Gun",                              "year": 1986, "weekendGross": 9449432  },
+        { "rank": 4, "title": "Short Circuit",                        "year": 1986, "weekendGross": 5463333  },
+        { "rank": 5, "title": "Sweet Liberty",                        "year": 1986, "weekendGross": 3114085  }
+      ]
+    },
+    {
+      "id": "1988-12-16",
+      "label": "December 16–18, 1988",
+      "films": [
+        { "rank": 1, "title": "Twins",                                "year": 1988, "weekendGross": 7781130  },
+        { "rank": 2, "title": "Rain Man",                             "year": 1988, "weekendGross": 7005719  },
+        { "rank": 3, "title": "The Naked Gun: From the Files of Police Squad!", "year": 1988, "weekendGross": 5607011 },
+        { "rank": 4, "title": "Scrooged",                             "year": 1988, "weekendGross": 4561210  },
+        { "rank": 5, "title": "Dirty Rotten Scoundrels",              "year": 1988, "weekendGross": 3840498  }
+      ]
+    },
+    {
+      "id": "1989-06-23",
+      "label": "June 23–25, 1989",
+      "films": [
+        { "rank": 1, "title": "Batman",                               "year": 1989, "weekendGross": 40489746 },
+        { "rank": 2, "title": "Honey, I Shrunk the Kids",             "year": 1989, "weekendGross": 14262961 },
+        { "rank": 3, "title": "Ghostbusters II",                      "year": 1989, "weekendGross": 13854623 },
+        { "rank": 4, "title": "Indiana Jones and the Last Crusade",   "year": 1989, "weekendGross": 8160750  },
+        { "rank": 5, "title": "Dead Poets Society",                   "year": 1989, "weekendGross": 7344976  }
+      ]
+    },
+    {
+      "id": "1990-11-16",
+      "label": "November 16–18, 1990",
+      "films": [
+        { "rank": 1, "title": "Home Alone",                           "year": 1990, "weekendGross": 17081997 },
+        { "rank": 2, "title": "Rocky V",                              "year": 1990, "weekendGross": 14073170 },
+        { "rank": 3, "title": "Child's Play 2",                       "year": 1990, "weekendGross": 5002535  },
+        { "rank": 4, "title": "The Rescuers Down Under",              "year": 1990, "weekendGross": 3499819  },
+        { "rank": 5, "title": "Ghost",                                "year": 1990, "weekendGross": 3001897  }
+      ]
+    },
+    {
+      "id": "1991-07-05",
+      "label": "July 5–7, 1991",
+      "films": [
+        { "rank": 1, "title": "Terminator 2: Judgment Day",           "year": 1991, "weekendGross": 31765506 },
+        { "rank": 2, "title": "The Naked Gun 2½: The Smell of Fear",  "year": 1991, "weekendGross": 11628880 },
+        { "rank": 3, "title": "Robin Hood: Prince of Thieves",        "year": 1991, "weekendGross": 10343849 },
+        { "rank": 4, "title": "City Slickers",                        "year": 1991, "weekendGross": 8200660  },
+        { "rank": 5, "title": "Problem Child 2",                      "year": 1991, "weekendGross": 5372880  }
+      ]
+    },
+    {
+      "id": "1993-06-11",
+      "label": "June 11–13, 1993",
+      "films": [
+        { "rank": 1, "title": "Jurassic Park",                        "year": 1993, "weekendGross": 50159460 },
+        { "rank": 2, "title": "Cliffhanger",                          "year": 1993, "weekendGross": 7621185  },
+        { "rank": 3, "title": "Made in America",                      "year": 1993, "weekendGross": 4718016  },
+        { "rank": 4, "title": "Guilty as Sin",                        "year": 1993, "weekendGross": 3652154  },
+        { "rank": 5, "title": "Dave",                                 "year": 1993, "weekendGross": 3034040  }
+      ]
+    },
+    {
+      "id": "1994-07-01",
+      "label": "July 1–3, 1994",
+      "films": [
+        { "rank": 1, "title": "The Lion King",                        "year": 1994, "weekendGross": 34208876 },
+        { "rank": 2, "title": "The Shadow",                           "year": 1994, "weekendGross": 11713845 },
+        { "rank": 3, "title": "Speed",                                "year": 1994, "weekendGross": 11237264 },
+        { "rank": 4, "title": "Blown Away",                           "year": 1994, "weekendGross": 10424873 },
+        { "rank": 5, "title": "I Love Trouble",                       "year": 1994, "weekendGross": 7827002  }
+      ]
+    },
+    {
+      "id": "1995-11-24",
+      "label": "November 24–26, 1995",
+      "films": [
+        { "rank": 1, "title": "Toy Story",                            "year": 1995, "weekendGross": 29140617 },
+        { "rank": 2, "title": "GoldenEye",                            "year": 1995, "weekendGross": 18110951 },
+        { "rank": 3, "title": "Ace Ventura: When Nature Calls",       "year": 1995, "weekendGross": 13487173 },
+        { "rank": 4, "title": "Money Train",                          "year": 1995, "weekendGross": 10608297 },
+        { "rank": 5, "title": "Casino",                               "year": 1995, "weekendGross": 9946480  }
+      ]
+    },
+    {
+      "id": "1996-07-05",
+      "label": "July 5–7, 1996",
+      "films": [
+        { "rank": 1, "title": "Independence Day",                     "year": 1996, "weekendGross": 50228264 },
+        { "rank": 2, "title": "The Nutty Professor",                  "year": 1996, "weekendGross": 25817900 },
+        { "rank": 3, "title": "Phenomenon",                           "year": 1996, "weekendGross": 24517121 },
+        { "rank": 4, "title": "The Hunchback of Notre Dame",          "year": 1996, "weekendGross": 13763017 },
+        { "rank": 5, "title": "Eraser",                               "year": 1996, "weekendGross": 13269318 }
+      ]
+    },
+    {
+      "id": "1997-12-19",
+      "label": "December 19–21, 1997",
+      "films": [
+        { "rank": 1, "title": "Titanic",                              "year": 1997, "weekendGross": 28638131 },
+        { "rank": 2, "title": "Tomorrow Never Dies",                  "year": 1997, "weekendGross": 25143007 },
+        { "rank": 3, "title": "Scream 2",                             "year": 1997, "weekendGross": 13921565 },
+        { "rank": 4, "title": "Amistad",                              "year": 1997, "weekendGross": 10609595 },
+        { "rank": 5, "title": "MouseHunt",                            "year": 1997, "weekendGross": 6062922  }
+      ]
+    },
+    {
+      "id": "1998-07-24",
+      "label": "July 24–26, 1998",
+      "films": [
+        { "rank": 1, "title": "Saving Private Ryan",                  "year": 1998, "weekendGross": 30576104 },
+        { "rank": 2, "title": "The Mask of Zorro",                    "year": 1998, "weekendGross": 13414229 },
+        { "rank": 3, "title": "Lethal Weapon 4",                      "year": 1998, "weekendGross": 13143811 },
+        { "rank": 4, "title": "There's Something About Mary",         "year": 1998, "weekendGross": 12540472 },
+        { "rank": 5, "title": "Armageddon",                           "year": 1998, "weekendGross": 11159371 }
+      ]
+    },
+    {
+      "id": "1999-05-21",
+      "label": "May 21–23, 1999",
+      "films": [
+        { "rank": 1, "title": "Star Wars: Episode I - The Phantom Menace", "year": 1999, "weekendGross": 64810970 },
+        { "rank": 2, "title": "The Mummy",                            "year": 1999, "weekendGross": 13791960 },
+        { "rank": 3, "title": "Entrapment",                           "year": 1999, "weekendGross": 6312182  },
+        { "rank": 4, "title": "The Matrix",                           "year": 1999, "weekendGross": 2875521  },
+        { "rank": 5, "title": "The Love Letter",                      "year": 1999, "weekendGross": 2692819  }
+      ]
+    },
+    {
+      "id": "2001-05-18",
+      "label": "May 18–20, 2001",
+      "films": [
+        { "rank": 1, "title": "Shrek",                                "year": 2001, "weekendGross": 42347760 },
+        { "rank": 2, "title": "The Mummy Returns",                    "year": 2001, "weekendGross": 20435840 },
+        { "rank": 3, "title": "A Knight's Tale",                      "year": 2001, "weekendGross": 10406836 },
+        { "rank": 4, "title": "Angel Eyes",                           "year": 2001, "weekendGross": 9225575  },
+        { "rank": 5, "title": "Bridget Jones's Diary",                "year": 2001, "weekendGross": 3730451  }
+      ]
+    },
+    {
+      "id": "2002-05-03",
+      "label": "May 3–5, 2002",
+      "films": [
+        { "rank": 1, "title": "Spider-Man",                           "year": 2002, "weekendGross": 114844116 },
+        { "rank": 2, "title": "The Scorpion King",                    "year": 2002, "weekendGross": 9046660  },
+        { "rank": 3, "title": "Changing Lanes",                       "year": 2002, "weekendGross": 5338222  },
+        { "rank": 4, "title": "Murder by Numbers",                    "year": 2002, "weekendGross": 3624487  },
+        { "rank": 5, "title": "Life or Something Like It",            "year": 2002, "weekendGross": 3182255  }
+      ]
+    },
+    {
+      "id": "2004-05-21",
+      "label": "May 21–23, 2004",
+      "films": [
+        { "rank": 1, "title": "Shrek 2",                              "year": 2004, "weekendGross": 108037878 },
+        { "rank": 2, "title": "Troy",                                 "year": 2004, "weekendGross": 23925330 },
+        { "rank": 3, "title": "Van Helsing",                          "year": 2004, "weekendGross": 10561655 },
+        { "rank": 4, "title": "Mean Girls",                           "year": 2004, "weekendGross": 6907627  },
+        { "rank": 5, "title": "Man on Fire",                          "year": 2004, "weekendGross": 3680522  }
+      ]
+    },
+    {
+      "id": "2005-05-20",
+      "label": "May 20–22, 2005",
+      "films": [
+        { "rank": 1, "title": "Star Wars: Episode III - Revenge of the Sith", "year": 2005, "weekendGross": 108435841 },
+        { "rank": 2, "title": "Monster-in-Law",                       "year": 2005, "weekendGross": 14350134 },
+        { "rank": 3, "title": "Kicking & Screaming",                  "year": 2005, "weekendGross": 10721715 },
+        { "rank": 4, "title": "Crash",                                "year": 2004, "weekendGross": 5546006  },
+        { "rank": 5, "title": "Unleashed",                            "year": 2005, "weekendGross": 4123556  }
+      ]
+    },
+    {
+      "id": "2006-07-07",
+      "label": "July 7–9, 2006",
+      "films": [
+        { "rank": 1, "title": "Pirates of the Caribbean: Dead Man's Chest", "year": 2006, "weekendGross": 135634554 },
+        { "rank": 2, "title": "Superman Returns",                     "year": 2006, "weekendGross": 21815243 },
+        { "rank": 3, "title": "The Devil Wears Prada",                "year": 2006, "weekendGross": 15014778 },
+        { "rank": 4, "title": "Click",                                "year": 2006, "weekendGross": 11921513 },
+        { "rank": 5, "title": "Cars",                                 "year": 2006, "weekendGross": 10734082 }
+      ]
+    },
+    {
+      "id": "2007-05-04",
+      "label": "May 4–6, 2007",
+      "films": [
+        { "rank": 1, "title": "Spider-Man 3",                         "year": 2007, "weekendGross": 151116516 },
+        { "rank": 2, "title": "Disturbia",                            "year": 2007, "weekendGross": 5844363  },
+        { "rank": 3, "title": "Fracture",                             "year": 2007, "weekendGross": 3696060  },
+        { "rank": 4, "title": "The Invisible",                        "year": 2007, "weekendGross": 3261374  },
+        { "rank": 5, "title": "Next",                                 "year": 2007, "weekendGross": 2892335  }
+      ]
+    },
+    {
+      "id": "2008-07-18",
+      "label": "July 18–20, 2008",
+      "films": [
+        { "rank": 1, "title": "The Dark Knight",                      "year": 2008, "weekendGross": 158411483 },
+        { "rank": 2, "title": "Mamma Mia!",                           "year": 2008, "weekendGross": 27751240 },
+        { "rank": 3, "title": "Hancock",                              "year": 2008, "weekendGross": 14040178 },
+        { "rank": 4, "title": "Journey to the Center of the Earth",   "year": 2008, "weekendGross": 12340435 },
+        { "rank": 5, "title": "Hellboy II: The Golden Army",          "year": 2008, "weekendGross": 10117815 }
+      ]
+    },
+    {
+      "id": "2009-12-18",
+      "label": "December 18–20, 2009",
+      "films": [
+        { "rank": 1, "title": "Avatar",                               "year": 2009, "weekendGross": 77025481 },
+        { "rank": 2, "title": "The Princess and the Frog",            "year": 2009, "weekendGross": 12185949 },
+        { "rank": 3, "title": "The Blind Side",                       "year": 2009, "weekendGross": 10021280 },
+        { "rank": 4, "title": "Did You Hear About the Morgans?",      "year": 2009, "weekendGross": 6616571  },
+        { "rank": 5, "title": "The Twilight Saga: New Moon",          "year": 2009, "weekendGross": 4407598  }
+      ]
+    },
+    {
+      "id": "2010-06-18",
+      "label": "June 18–20, 2010",
+      "films": [
+        { "rank": 1, "title": "Toy Story 3",                          "year": 2010, "weekendGross": 110307189 },
+        { "rank": 2, "title": "The Karate Kid",                       "year": 2010, "weekendGross": 29876295 },
+        { "rank": 3, "title": "The A-Team",                           "year": 2010, "weekendGross": 14405318 },
+        { "rank": 4, "title": "Get Him to the Greek",                 "year": 2010, "weekendGross": 6104810  },
+        { "rank": 5, "title": "Shrek Forever After",                  "year": 2010, "weekendGross": 5620398  }
+      ]
+    },
+    {
+      "id": "2011-07-15",
+      "label": "July 15–17, 2011",
+      "films": [
+        { "rank": 1, "title": "Harry Potter and the Deathly Hallows: Part 2", "year": 2011, "weekendGross": 169189427 },
+        { "rank": 2, "title": "Transformers: Dark of the Moon",       "year": 2011, "weekendGross": 21328545 },
+        { "rank": 3, "title": "Horrible Bosses",                      "year": 2011, "weekendGross": 17777464 },
+        { "rank": 4, "title": "Zookeeper",                            "year": 2011, "weekendGross": 12330512 },
+        { "rank": 5, "title": "Cars 2",                               "year": 2011, "weekendGross": 8407529  }
+      ]
+    },
+    {
+      "id": "2012-05-04",
+      "label": "May 4–6, 2012",
+      "films": [
+        { "rank": 1, "title": "The Avengers",                         "year": 2012, "weekendGross": 207438708 },
+        { "rank": 2, "title": "Think Like a Man",                     "year": 2012, "weekendGross": 8106166  },
+        { "rank": 3, "title": "The Hunger Games",                     "year": 2012, "weekendGross": 5587661  },
+        { "rank": 4, "title": "The Pirates! Band of Misfits",         "year": 2012, "weekendGross": 5502482  },
+        { "rank": 5, "title": "The Lucky One",                        "year": 2012, "weekendGross": 5368115  }
+      ]
+    },
+    {
+      "id": "2013-05-03",
+      "label": "May 3–5, 2013",
+      "films": [
+        { "rank": 1, "title": "Iron Man 3",                           "year": 2013, "weekendGross": 174144585 },
+        { "rank": 2, "title": "Pain & Gain",                          "year": 2013, "weekendGross": 7511315  },
+        { "rank": 3, "title": "42",                                   "year": 2013, "weekendGross": 6055327  },
+        { "rank": 4, "title": "Oblivion",                             "year": 2013, "weekendGross": 5642335  },
+        { "rank": 5, "title": "The Croods",                           "year": 2013, "weekendGross": 4202639  }
+      ]
+    },
+    {
+      "id": "2014-08-01",
+      "label": "August 1–3, 2014",
+      "films": [
+        { "rank": 1, "title": "Guardians of the Galaxy",              "year": 2014, "weekendGross": 94320883 },
+        { "rank": 2, "title": "Lucy",                                 "year": 2014, "weekendGross": 18252590 },
+        { "rank": 3, "title": "Get on Up",                            "year": 2014, "weekendGross": 13585915 },
+        { "rank": 4, "title": "Hercules",                             "year": 2014, "weekendGross": 11010367 },
+        { "rank": 5, "title": "Dawn of the Planet of the Apes",       "year": 2014, "weekendGross": 8690314  }
+      ]
+    },
+    {
+      "id": "2015-12-18",
+      "label": "December 18–20, 2015",
+      "films": [
+        { "rank": 1, "title": "Star Wars: The Force Awakens",         "year": 2015, "weekendGross": 247966675 },
+        { "rank": 2, "title": "Alvin and the Chipmunks: The Road Chip", "year": 2015, "weekendGross": 14287159 },
+        { "rank": 3, "title": "Sisters",                              "year": 2015, "weekendGross": 13922855 },
+        { "rank": 4, "title": "The Hunger Games: Mockingjay - Part 2", "year": 2015, "weekendGross": 5692683  },
+        { "rank": 5, "title": "Creed",                                "year": 2015, "weekendGross": 5013055  }
+      ]
+    },
+    {
+      "id": "2016-05-06",
+      "label": "May 6–8, 2016",
+      "films": [
+        { "rank": 1, "title": "Captain America: Civil War",           "year": 2016, "weekendGross": 179139142 },
+        { "rank": 2, "title": "The Jungle Book",                      "year": 2016, "weekendGross": 24488436 },
+        { "rank": 3, "title": "Mother's Day",                         "year": 2016, "weekendGross": 11087076 },
+        { "rank": 4, "title": "The Huntsman: Winter's War",           "year": 2016, "weekendGross": 3948835  },
+        { "rank": 5, "title": "Keanu",                                "year": 2016, "weekendGross": 3287484  }
+      ]
+    },
+    {
+      "id": "2017-03-17",
+      "label": "March 17–19, 2017",
+      "films": [
+        { "rank": 1, "title": "Beauty and the Beast",                 "year": 2017, "weekendGross": 174750616 },
+        { "rank": 2, "title": "Kong: Skull Island",                   "year": 2017, "weekendGross": 27832142 },
+        { "rank": 3, "title": "Logan",                                "year": 2017, "weekendGross": 17815677 },
+        { "rank": 4, "title": "Get Out",                              "year": 2017, "weekendGross": 13437220 },
+        { "rank": 5, "title": "The Shack",                            "year": 2017, "weekendGross": 6005739  }
+      ]
+    },
+    {
+      "id": "2018-02-16",
+      "label": "February 16–18, 2018",
+      "films": [
+        { "rank": 1, "title": "Black Panther",                        "year": 2018, "weekendGross": 202003951 },
+        { "rank": 2, "title": "Peter Rabbit",                         "year": 2018, "weekendGross": 17506207 },
+        { "rank": 3, "title": "Fifty Shades Freed",                   "year": 2018, "weekendGross": 17307545 },
+        { "rank": 4, "title": "Jumanji: Welcome to the Jungle",       "year": 2017, "weekendGross": 7937970  },
+        { "rank": 5, "title": "The 15:17 to Paris",                   "year": 2018, "weekendGross": 7586015  }
+      ]
+    },
+    {
+      "id": "2019-04-26",
+      "label": "April 26–28, 2019",
+      "films": [
+        { "rank": 1, "title": "Avengers: Endgame",                    "year": 2019, "weekendGross": 357115007 },
+        { "rank": 2, "title": "Captain Marvel",                       "year": 2019, "weekendGross": 8312751  },
+        { "rank": 3, "title": "The Curse of La Llorona",              "year": 2019, "weekendGross": 8045744  },
+        { "rank": 4, "title": "Breakthrough",                         "year": 2019, "weekendGross": 6806342  },
+        { "rank": 5, "title": "Shazam!",                              "year": 2019, "weekendGross": 5583903  }
+      ]
+    },
+    {
+      "id": "2021-09-03",
+      "label": "September 3–5, 2021",
+      "films": [
+        { "rank": 1, "title": "Shang-Chi and the Legend of the Ten Rings", "year": 2021, "weekendGross": 75388688 },
+        { "rank": 2, "title": "Candyman",                             "year": 2021, "weekendGross": 10300310 },
+        { "rank": 3, "title": "Free Guy",                             "year": 2021, "weekendGross": 8885466  },
+        { "rank": 4, "title": "Jungle Cruise",                        "year": 2021, "weekendGross": 4006436  },
+        { "rank": 5, "title": "PAW Patrol: The Movie",                "year": 2021, "weekendGross": 4004814  }
+      ]
+    },
+    {
+      "id": "2022-05-27",
+      "label": "May 27–29, 2022",
+      "films": [
+        { "rank": 1, "title": "Top Gun: Maverick",                    "year": 2022, "weekendGross": 126707459 },
+        { "rank": 2, "title": "Doctor Strange in the Multiverse of Madness", "year": 2022, "weekendGross": 16069358 },
+        { "rank": 3, "title": "The Bob's Burgers Movie",              "year": 2022, "weekendGross": 12416819 },
+        { "rank": 4, "title": "Downton Abbey: A New Era",             "year": 2022, "weekendGross": 5787935  },
+        { "rank": 5, "title": "The Bad Guys",                         "year": 2022, "weekendGross": 4382790  }
+      ]
+    },
+    {
+      "id": "2023-07-21",
+      "label": "July 21–23, 2023",
+      "films": [
+        { "rank": 1, "title": "Barbie",                               "year": 2023, "weekendGross": 162022044 },
+        { "rank": 2, "title": "Oppenheimer",                          "year": 2023, "weekendGross": 82455420 },
+        { "rank": 3, "title": "Sound of Freedom",                     "year": 2023, "weekendGross": 19825575 },
+        { "rank": 4, "title": "Mission: Impossible - Dead Reckoning Part One", "year": 2023, "weekendGross": 19354511 },
+        { "rank": 5, "title": "Indiana Jones and the Dial of Destiny", "year": 2023, "weekendGross": 6678501  }
+      ]
+    }
+  ]
+}
