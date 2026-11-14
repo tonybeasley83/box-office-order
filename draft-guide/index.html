@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 Draft Night Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one phone-width column. Sticky scoreboard on top, "take next" card, then a searchable list with two big buttons per kid. */
+:root{
+  --bg:#f4f2ee; --panel:#ffffff; --ink:#1d2430; --muted:#5d6675; --line:#d9d5cc;
+  --accent:#c4541a; --accent-ink:#ffffff;
+  --mine:#1f7a4d; --mine-bg:#e2f3e9; --gone:#a23b3b; --gone-bg:#f6e3e1; --warn-bg:#fff1c9; --warn-ink:#6b4a00;
+  --chip:#ebe7df;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#14171c; --panel:#1e232b; --ink:#eef0f3; --muted:#a3acb9; --line:#343b47;
+    --accent:#f08a4b; --accent-ink:#1a120b;
+    --mine:#5fd197; --mine-bg:#173526; --gone:#f08d8d; --gone-bg:#3a1f1f; --warn-bg:#40330d; --warn-ink:#ffe08a;
+    --chip:#2a303a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171c; --panel:#1e232b; --ink:#eef0f3; --muted:#a3acb9; --line:#343b47;
+  --accent:#f08a4b; --accent-ink:#1a120b;
+  --mine:#5fd197; --mine-bg:#173526; --gone:#f08d8d; --gone-bg:#3a1f1f; --warn-bg:#40330d; --warn-ink:#ffe08a;
+  --chip:#2a303a;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.35;-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 80px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.score{display:flex;align-items:center;gap:14px}
+.score .stat{display:flex;flex-direction:column}
+.score .num{font-family:var(--display);font-weight:700;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.score .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.score .sp{flex:1}
+.undo{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-weight:600}
+.undo[disabled]{opacity:.4}
+.search{width:100%;min-height:46px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:17px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.tab{flex:none;min-height:38px;padding:0 12px;border-radius:19px;background:var(--chip);font-weight:600;font-size:14px;white-space:nowrap}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+.alert{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);color:var(--warn-ink);font-weight:600}
+.alert.bad{background:var(--gone-bg);color:var(--gone)}
+
+.next{margin-top:12px;background:var(--panel);border:2px solid var(--accent);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.next .eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.next .name{font-family:var(--display);font-weight:700;font-size:38px;line-height:1;text-wrap:balance}
+.next .why{color:var(--muted);font-size:15px}
+.next .acts{display:flex;gap:8px;margin-top:4px}
+.big{flex:1;min-height:52px;border-radius:12px;font-weight:600;font-size:17px}
+.big.mine{background:var(--mine);color:var(--bg)}
+.big.gone{background:var(--gone-bg);color:var(--gone);border:1px solid var(--gone)}
+.then{font-size:14px;color:var(--muted)}
+.then b{color:var(--ink);font-weight:600}
+
+h2{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.03em;text-transform:uppercase;margin:18px 0 6px;color:var(--muted)}
+.list{display:flex;flex-direction:column;gap:6px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:12px;border-left-width:6px;overflow:hidden}
+.row.s-m{border-left-color:var(--mine);background:var(--mine-bg)}
+.row.s-t{border-left-color:var(--gone);opacity:.62}
+.row.f-w{border-left-color:var(--accent)}
+.rowmain{display:flex;align-items:stretch;gap:6px}
+.info{flex:1;min-width:0;text-align:left;padding:10px 4px 10px 10px;display:flex;flex-direction:column;gap:3px}
+.nm{font-weight:600;font-size:18px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.row.s-t .nm span.t{text-decoration:line-through}
+.sc{font-family:var(--display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;color:var(--accent)}
+.meta{font-size:13.5px;color:var(--muted)}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{font-size:11.5px;font-weight:600;padding:2px 7px;border-radius:9px;background:var(--chip);white-space:nowrap}
+.chip.c{background:var(--mine-bg);color:var(--mine)}
+.chip.w{background:var(--warn-bg);color:var(--warn-ink)}
+.chip.a{background:var(--accent);color:var(--accent-ink)}
+.btns{display:flex;flex-direction:column;gap:4px;padding:6px;justify-content:center}
+.b{min-width:72px;min-height:40px;border-radius:9px;font-weight:600;font-size:14px;padding:0 8px}
+.b.gone{background:var(--gone-bg);color:var(--gone)}
+.b.mine{background:var(--mine-bg);color:var(--mine)}
+.b.back{background:var(--chip)}
+.more{border-top:1px solid var(--line);padding:10px 12px;font-size:14.5px;display:flex;flex-direction:column;gap:7px}
+.more .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em;display:block}
+.rat{display:flex;gap:6px}
+.rat div{flex:1;background:var(--chip);border-radius:8px;text-align:center;padding:4px 0;font-size:11px;color:var(--muted)}
+.rat b{display:block;font-family:var(--display);font-size:20px;color:var(--ink)}
+.more a{color:var(--accent);font-weight:600}
+.prefs{display:flex;gap:6px}
+.pf{flex:1;min-height:40px;border-radius:9px;background:var(--chip);font-weight:600;font-size:14px}
+.pf[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.empty{color:var(--muted);padding:18px 4px}
+.foot{margin-top:26px;display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:13px}
+.reset{align-self:flex-start;min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:9px;font-weight:600;color:var(--gone)}
+@media (prefers-reduced-motion:no-preference){.row{transition:opacity .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="score">
+      <div class="stat"><span class="num" id="nMine">1/9</span><span class="lab">My team</span></div>
+      <div class="stat"><span class="num" id="nOff">0</span><span class="lab">Off the board</span></div>
+      <div class="stat"><span class="num" id="nLeft">0</span><span class="lab">Left</span></div>
+      <span class="sp"></span>
+      <button class="undo" id="undo" type="button">Undo</button>
+    </div>
+    <input class="search" id="q" type="search" inputmode="search" autocomplete="off" placeholder="Search name or eval number">
+    <div class="tabs" id="tabs"></div>
+  </div>
+  <div id="alerts"></div>
+  <div id="next"></div>
+  <h2 id="listTitle">Best for me</h2>
+  <div class="list" id="list"></div>
+  <div class="foot">
+    <span id="sync">Saved on this device.</span>
+    <button class="reset" id="reset" type="button">Reset the whole draft</button>
+  </div>
+</div>
+<script id="data" type="application/json">{"players":[{"id":"2","n":"Dominic Barragan","sc":"Chaparral","ht":"4'11","tot":21,"rk":53,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"4","n":"Jacob Earl","sc":"Chaparral","ht":"4'8","tot":20,"rk":59,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"14","n":"Joaquin Cardeno","sc":"OTHER","ht":"4'11","tot":35,"rk":7,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"15","n":"Leandro Jimenez","sc":"El Roble","ht":"5'1","tot":26,"rk":39,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"18","n":"Elijah Bilbrew","sc":"Westmont Elementary","ht":"4'4","tot":16,"rk":64,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"19","n":"Austin Lu","sc":"Condit","ht":"4'10","tot":32,"rk":21,"condit":true,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"28","n":"Austin Alvarenga","sc":"Western Christian School","ht":"4'7","tot":27,"rk":37,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"30","n":"Ketan Bansal","sc":"Sycamore","ht":"5'0","tot":26,"rk":39,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"31","n":"Guillermo Beasley","sc":"Condit","ht":"5'0","tot":34,"rk":10,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"37","n":"Alex Davidov","sc":"Mountain View","ht":"5'1","tot":28,"rk":34,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"42","n":"Kenneth Canty","sc":"Condit","ht":"5'1","tot":35,"rk":7,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"44","n":"Isaac Huerta","sc":"Ramona Middle School","ht":"4'9","tot":33,"rk":18,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"46","n":"Desmond Bergmann","sc":"Sycamore","ht":"5'2","tot":21,"rk":53,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"47","n":"Andrew Ferreria","sc":"Sycamore","ht":"5'2","tot":36,"rk":4,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"48","n":"Connor Chae","sc":"Foothill Country Day School","ht":"5'2","tot":32,"rk":21,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"49","n":"Sanjay Dadlani","sc":"Foothill Country Day School","ht":"5'3","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"53","n":"Shane Brennan","sc":"Chaparral","ht":"5'1","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"57","n":"Julian Gama","sc":"Sumner Danbury","ht":"4'11","tot":21,"rk":53,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"60","n":"Cameron Kent","sc":"Chaparral","ht":"5'0","tot":31,"rk":25,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"67","n":"Dylan Lee","sc":"Sumner Danbury","ht":"5'2","tot":37,"rk":2,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"68","n":"Joseph Bruno","sc":"Condit","ht":"5'0","tot":21,"rk":53,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"75","n":"Hudson Gardiner","sc":"Oak Mesa","ht":"4'11","tot":32,"rk":21,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"76","n":"Nikolaus Lauer","sc":"Sycamore","ht":"5'1","tot":21,"rk":53,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"80","n":"Robert Collazo","sc":"Sumner Danbury","ht":"4'8","tot":25,"rk":42,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"81","n":"Aden Gonzales","sc":"Chaparral","ht":"4'5","tot":36,"rk":4,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"89","n":"Asher Ewald","sc":"Sumner Danbury","ht":"4'11","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"92","n":"Aaron Li","sc":"Sycamore","ht":"5'5","tot":28,"rk":34,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"93","n":"Luca Lopez","sc":"Condit","ht":"4'7","tot":30,"rk":31,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"94","n":"Jack Keller","sc":"Chaparral","ht":"4'11","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"104","n":"Connor Bressler","sc":"Chaparral","ht":"5'0","tot":33,"rk":18,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"106","n":"Ricardo Aguilar","sc":"Oakmont","ht":"4'10","tot":29,"rk":32,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"107","n":"Graham Barnes","sc":"Sycamore","ht":"4'10","tot":31,"rk":25,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"108","n":"Greyson Robbin","sc":"Condit","ht":"4'11","tot":25,"rk":42,"condit":true,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"109","n":"Eligh Trujillo","sc":"Condit","ht":"4'8","tot":21,"rk":53,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"110","n":"Calder Martinez-Celis","sc":"Chaparral","ht":"5'7","tot":23,"rk":48,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"114","n":"Andrew Sayat","sc":"John Golden","ht":"4'7","tot":23,"rk":48,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"117","n":"Kenneth Tanaka","sc":"Sumner Danbury","ht":"4'9","tot":31,"rk":25,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"118","n":"Evan Monegan","sc":"Fro Prep","ht":"5'4","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"119","n":"TJ Stimac","sc":"Condit","ht":"5'0","tot":37,"rk":2,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"120","n":"Sebastian Yoon","sc":"Foothill Country Day School","ht":"4'10","tot":31,"rk":25,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"123","n":"Jack Wadsworth","sc":"Condit","ht":"4'11","tot":31,"rk":25,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"124","n":"Jeremiah Vander Laan","sc":"Lightfoot Elementary","ht":"5'3","tot":27,"rk":37,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"133","n":"Thomas Santhosh","sc":"Chaparral","ht":"5'3","tot":12,"rk":68,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"136","n":"Devan Sanghvi","sc":"Foothill Country Day School","ht":"4'4","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"139","n":"Noah Rodriguez","sc":"OLA","ht":"4'9","tot":36,"rk":4,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"146","n":"Viaan Patel","sc":"Condit","ht":"4'5","tot":32,"rk":21,"condit":true,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"150","n":"Winston Ni","sc":"Mountain View","ht":"4'11","tot":22,"rk":50,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"158","n":"Rory McElnea","sc":"Sycamore","ht":"5'0","tot":14,"rk":67,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"163","n":"Roger ONeil","sc":"Condit","ht":"4'9","tot":24,"rk":45,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"166","n":"Jett Robertson","sc":"Chaparral","ht":"5'0","tot":34,"rk":10,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"170","n":"Adam Yi","sc":"Condit","ht":"4'5","tot":28,"rk":34,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"171","n":"Alex Rockne","sc":"Sycamore","ht":"5'3","tot":31,"rk":25,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"172","n":"Dylan Naik","sc":"Foothill Country Day School","ht":"4'10","tot":33,"rk":18,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"174","n":"Cameron Vazquez","sc":"Sumner Danbury","ht":"5'1","tot":29,"rk":32,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"176","n":"Yihang Xiao","sc":"Chaparral","ht":"4'0","tot":24,"rk":45,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"187","n":"Shaoyu Sang","sc":"Chaparral Middle School","ht":"5'4","tot":22,"rk":50,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"189","n":"Jayden Perez","sc":"Vista Del Valle","ht":"6'0","tot":16,"rk":64,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"191","n":"Maximilian Mendoza","sc":"Oakmont","ht":"5'0","tot":20,"rk":59,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"300","n":"Xancarlo Mendez","sc":"Chaparral","ht":"5'3","tot":17,"rk":63,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"304","n":"Caleb Webster","sc":"Western Christian School","ht":"4'11","tot":24,"rk":45,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"306","n":"Austin Ohara","sc":"Chaparral","ht":"5'0","tot":22,"rk":50,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"310","n":"Graham Tewell","sc":"Sycamore","ht":"4'9","tot":38,"rk":1,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"312","n":"William Seward","sc":"","ht":"","tot":26,"rk":39,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"315","n":"Andrew Mateo","sc":"Condit","ht":"4'11","tot":20,"rk":59,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"356","n":"Freddy Ghobrial","sc":"Terra vista elementary","ht":"4'7","tot":16,"rk":64,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"360","n":"Alberto Buthman","sc":"Sycamore","ht":"4'6","tot":35,"rk":7,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"363","n":"Samuel Cutler","sc":"Carden Arbor","ht":"5'0","tot":25,"rk":42,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"970","n":"Bryce Carranza","sc":"Chaparral","ht":"5'3","tot":19,"rk":62,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"A","n":"Alex Casillas","sc":"Condit","ht":"4'10","tot":null,"rk":null,"condit":true,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"B","n":"Alec Choi","sc":"Chaparral","ht":"5'8","tot":null,"rk":null,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"C","n":"Bodie Gonzalez","sc":"Chaparral","ht":"4'7","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"D","n":"Elyes Hajaiej","sc":"Condit","ht":"4'11","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"E","n":"Luke Hranek","sc":"Condit","ht":"4'10","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"F","n":"Kamari Kendricks","sc":"Vista valle","ht":"5'10?","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"G","n":"Dean Lemas","sc":"Chaparral","ht":"4'7","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"H","n":"Hudson-Noah Martinez","sc":"Foothill Country Day School","ht":"4'9","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"I","n":"Enrico Najera","sc":"Condit","ht":"5'2","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"J","n":"Jaxson Nunez","sc":"Grove Center Elementary","ht":"5'2","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"K","n":"Michael Puebla","sc":"Springs/ Homeschool","ht":"4'9","tot":null,"rk":null,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"L","n":"Eli Putnam","sc":"Chaparral","ht":"4'7","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"M","n":"Max Rogers","sc":"Chaparral","ht":"5'0","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"N","n":"Noah Sayegh","sc":"Magnolia","ht":"5'2","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"O","n":"Matthew Serret","sc":"Chaparral","ht":"4'8","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"P","n":"Donovan Smith","sc":"Condit","ht":"5'4","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"Q","n":"Micah Sunnaa","sc":"Foothill Country Day School","ht":"5'3","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"R","n":"Ryder Towner","sc":"Chaparral","ht":"5'3","tot":null,"rk":null,"condit":false,"mon":true,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"S","n":"Devi Koa Yabut","sc":"Condit","ht":"4'5","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"T","n":"Jamie Zhu","sc":"Foothill country day school","ht":"5'0","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"U","n":"Matthew Ma","sc":"Chaparral","ht":"4'7","tot":null,"rk":null,"condit":false,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"V","n":"Rupert MacPherson","sc":"Condit","ht":"5'2","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""},{"id":"W","n":"Ethan Maeda","sc":"Condit","ht":"4'7","tot":null,"rk":null,"condit":true,"mon":false,"g":"","wt":"","r":null,"cant":"","club":"","req":"","par":"","em":"","ph":"","city":"","nr":"","exp":"","pay":"","why":"","sig":""}],"cfg":{"mine":["31"],"coach":["119","42","47","89","109"],"must":["170"],"mustAt":{"170":3},"want":["123"],"skip":["166","146"],"premium":["67","310","44","139","118","49","14"],"late":["48","117","171","93","92","174","106","124","19","60","75","N","I","163","P","110","F","J","S","W","D","108","B","V"],"pair":["F","J"]}}</script>
+<script>
+(function(){
+"use strict";
+var D=JSON.parse(document.getElementById("data").textContent);
+var P=D.players, C=D.cfg, byId={};
+P.forEach(function(p){byId[p.id]=p;});
+var ROSTER=9, KEY="b2draft.v1";
+var st={p:{},h:[],t:0};
+try{var raw=localStorage.getItem(KEY); if(raw){var o=JSON.parse(raw); if(o&&o.p){st=o; st.h=st.h||[];}}}catch(e){}
+var view="best", query="", open=null, resetArmed=false;
+
+function has(a,id){return a.indexOf(id)>=0;}
+function status(id){var e=st.p[id]; if(e&&e.s!==undefined) return e.s; if(has(C.mine,id)) return "m"; if(has(C.coach,id)) return "t"; return "";}
+function flag(id){var e=st.p[id]; if(e&&e.f!==undefined) return e.f; if(has(C.want,id)) return "w"; if(has(C.skip,id)) return "x"; return "";}
+function setS(id,s){var prev=status(id); if(prev===s) return; st.h.push([id,prev]); if(st.h.length>40) st.h.shift(); (st.p[id]=st.p[id]||{}).s=s; save(); render();}
+function setF(id,f){(st.p[id]=st.p[id]||{}).f=(flag(id)===f?"":f); save(); render();}
+function undo(){var x=st.h.pop(); if(!x) return; (st.p[x[0]]=st.p[x[0]]||{}).s=x[1]; save(); render();}
+
+/* ---------- saving ---------- */
+var ref=null, writing=false, dirty=false, syncEl=document.getElementById("sync");
+function note(s){syncEl.textContent=s;}
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+function save(){st.t=Date.now(); saveLocal(); push();}
+function push(){
+  if(!ref) return;
+  if(writing){dirty=true; return;}
+  writing=true;
+  ref.set({j:JSON.stringify(st),t:st.t}).then(function(){note("Saved to your account. Open this page on any device to pick up where you left off.");},function(){note("Saved on this device only. No connection to your account right now.");}).then(function(){writing=false; if(dirty){dirty=false; push();}});
+}
+function startSync(){
+  if(!(window.claude&&typeof window.claude.use==="function")) return;
+  window.claude.use("db").then(function(db){
+    if(!db) return;
+    ref=db.doc("draft/state");
+    var first=true;
+    ref.onSnapshot(function(snap){
+      var d=snap.exists?snap.data():null, wasFirst=first; first=false;
+      if(d&&typeof d.j==="string"&&d.t>st.t){
+        try{var o=JSON.parse(d.j); if(o&&o.p){st=o; st.h=st.h||[]; saveLocal(); render();}}catch(e){}
+        note("Saved to your account. Open this page on any device to pick up where you left off.");
+      }else if(wasFirst&&st.t&&(!d||d.t<st.t)){push();}
+      else if(d){note("Saved to your account. Open this page on any device to pick up where you left off.");}
+    },function(){note("Saved on this device only. No connection to your account right now.");});
+  },function(){});
+}
+
+/* ---------- recommendations ---------- */
+function avail(id){return status(id)==="";}
+function mineCount(){return P.filter(function(p){return status(p.id)==="m";}).length;}
+function recs(){
+  var n=mineCount(), left=ROSTER-n, out=[], seen={};
+  function add(id,tag){ if(seen[id]||!avail(id)||flag(id)==="x") return; if(id===C.pair[0]){ var mate=status(C.pair[1]); if(mate==="t") return; if(mate===""&&left<2) return; } seen[id]=1; out.push({p:byId[id],tag:tag}); }
+  var wants=P.filter(function(p){return flag(p.id)==="w";}).map(function(p){return p.id;});
+  if(n<=1){
+    C.premium.forEach(function(id){add(id,"Your open early pick");});
+    wants.forEach(function(id){add(id,"Starred");});
+    C.must.forEach(function(id){add(id,"Must draft");});
+  }else{
+    C.must.forEach(function(id){ if(n>=(C.mustAt[id]||0)) add(id,"Must draft");});
+    wants.forEach(function(id){add(id,"Starred");});
+    C.premium.forEach(function(id){add(id,"Slid to you");});
+  }
+  C.late.forEach(function(id){add(id,"Best fit left");});
+  P.filter(function(p){return p.tot!==null;}).sort(function(a,b){return b.tot-a.tot;}).forEach(function(p){add(p.id,"Best score left");});
+  P.forEach(function(p){add(p.id,"Unrated");});
+  return out;
+}
+function alerts(){
+  var a=[];
+  C.must.forEach(function(id){
+    var p=byId[id], s=status(id);
+    if(s==="t"){a.push({bad:1,t:p.n+" was taken by another team."}); return;}
+    if(s==="m") return;
+    var higher=P.filter(function(x){return avail(x.id)&&x.tot!==null&&x.tot>p.tot;}).length;
+    if(higher<=4) a.push({t:"Take "+p.n+" with your next pick. Only "+higher+" higher-rated "+(higher===1?"kid is":"kids are")+" left."});
+  });
+  return a;
+}
+
+/* ---------- rendering ---------- */
+function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!==undefined&&txt!==null) e.textContent=txt; return e;}
+function btn(cls,txt,fn){var b=el("button",cls,txt); b.type="button"; b.addEventListener("click",function(ev){ev.stopPropagation(); fn();}); return b;}
+function meta(p){var m=[]; if(p.ht) m.push(p.ht+(p.wt?" · "+p.wt:"")); if(p.sc) m.push(p.sc); if(p.g) m.push(p.g.replace(" Grade","")); m.push(p.rk?("rank "+p.rk):"no eval"); m.push("#"+p.id); return m.join(" · ");}
+function chips(p){
+  var c=el("div","chips"), s=status(p.id), f=flag(p.id);
+  function add(k,t){c.appendChild(el("span","chip "+k,t));}
+  if(has(C.must,p.id)&&s!=="m") add("a","Must draft");
+  if(f==="w"&&s==="") add("a","Starred");
+  if(has(C.coach,p.id)) add("","Coach's kid");
+  if(p.condit) add("c","Condit");
+  if(p.mon) add("w","No Mondays");
+  if(has(C.pair,p.id)) add("w","Pair: Kendricks + Nunez");
+  if(p.pay==="Pending") add("","Unpaid");
+  return c;
+}
+function line(k,v){var d=el("div"); d.appendChild(el("span","k",k)); d.appendChild(document.createTextNode(v)); return d;}
+function details(p){
+  var m=el("div","more");
+  if(p.r){var r=el("div","rat"); ["Ball","Shoot","Def","Ath","IQ"].forEach(function(k,i){var d=el("div"); d.appendChild(el("b",null,p.r[i])); d.appendChild(document.createTextNode(k)); r.appendChild(d);}); m.appendChild(r);}
+  if(p.why) m.appendChild(line("Why",p.why));
+  if(p.sig) m.appendChild(line("Notes",p.sig));
+  if(p.cant) m.appendChild(line("Can't practice",p.cant));
+  if(p.club) m.appendChild(line("Club or travel sport",p.club));
+  if(p.req) m.appendChild(line("Requests on form",p.req));
+  var who=[p.nr,p.exp&&p.exp!=="None"?p.exp+" experience":(p.exp==="None"?"no experience":""),p.city].filter(Boolean).join(" · ");
+  if(who) m.appendChild(line("Background",who));
+  if(p.par){
+    var d=el("div"); d.appendChild(el("span","k","Parent")); d.appendChild(document.createTextNode(p.par+" · "));
+    if(p.ph){var a=el("a",null,p.ph); a.href="tel:"+p.ph.replace(/[^0-9]/g,""); d.appendChild(a); d.appendChild(document.createTextNode(" · "));}
+    if(p.em){var b=el("a",null,p.em); b.href="mailto:"+p.em; d.appendChild(b);}
+    m.appendChild(d);
+  }
+  var pr=el("div","prefs"), f=flag(p.id);
+  var w=btn("pf",f==="w"?"Starred":"Star him",function(){setF(p.id,"w");}); w.setAttribute("aria-pressed",f==="w");
+  var x=btn("pf",f==="x"?"Marked do not want":"Do not want",function(){setF(p.id,"x");}); x.setAttribute("aria-pressed",f==="x");
+  pr.appendChild(w); pr.appendChild(x); m.appendChild(pr);
+  return m;
+}
+function row(p,tag){
+  var s=status(p.id), f=flag(p.id);
+  var r=el("div","row"+(s?" s-"+s:"")+(f==="w"&&!s?" f-w":""));
+  var main=el("div","rowmain");
+  var info=el("button","info"); info.type="button"; info.setAttribute("aria-expanded",open===p.id);
+  var nm=el("div","nm"); nm.appendChild(el("span","t",p.n)); nm.appendChild(el("span","sc",p.tot===null?"NR":p.tot));
+  info.appendChild(nm); info.appendChild(el("div","meta",(tag?tag+" · ":"")+meta(p))); info.appendChild(chips(p));
+  info.addEventListener("click",function(){open=(open===p.id?null:p.id); render();});
+  main.appendChild(info);
+  var bs=el("div","btns");
+  if(s==="") {bs.appendChild(btn("b gone","Taken",function(){setS(p.id,"t");})); bs.appendChild(btn("b mine","Mine",function(){setS(p.id,"m");}));}
+  else bs.appendChild(btn("b back",s==="m"?"Mine ✓ undo":"Put back",function(){setS(p.id,"");}));
+  main.appendChild(bs); r.appendChild(main);
+  if(open===p.id) r.appendChild(details(p));
+  return r;
+}
+var TABS=[["best","Best for me"],["all","All by score"],["condit","Condit"],["mine","My team"],["gone","Taken"]];
+function render(){
+  var n=mineCount(), off=P.filter(function(p){return status(p.id)!=="";}).length;
+  document.getElementById("nMine").textContent=n+"/"+ROSTER;
+  document.getElementById("nOff").textContent=off;
+  document.getElementById("nLeft").textContent=P.length-off;
+  document.getElementById("undo").disabled=!st.h.length;
+  var tb=document.getElementById("tabs"); tb.textContent="";
+  TABS.forEach(function(t){var b=btn("tab",t[1],function(){view=t[0]; query=""; document.getElementById("q").value=""; render();}); b.setAttribute("aria-pressed",view===t[0]&&!query); tb.appendChild(b);});
+  var al=document.getElementById("alerts"); al.textContent="";
+  alerts().forEach(function(a){al.appendChild(el("div","alert"+(a.bad?" bad":""),a.t));});
+  var R=recs(), nx=document.getElementById("next"); nx.textContent="";
+  if(n>=ROSTER){var done=el("div","next"); done.appendChild(el("div","eyebrow","Roster full")); done.appendChild(el("div","name","You have "+n+" players.")); nx.appendChild(done);}
+  else if(R.length){
+    var top=R[0], p=top.p, card=el("div","next");
+    card.appendChild(el("div","eyebrow","Pick "+(n+1)+" of "+ROSTER+" · "+top.tag));
+    card.appendChild(el("div","name",p.n));
+    card.appendChild(el("div","meta",(p.tot===null?"No eval":"Score "+p.tot)+" · "+meta(p)));
+    if(p.why) card.appendChild(el("div","why",p.why));
+    card.appendChild(chips(p));
+    var acts=el("div","acts");
+    acts.appendChild(btn("big mine","I drafted him",function(){setS(p.id,"m");}));
+    acts.appendChild(btn("big gone","Someone took him",function(){setS(p.id,"t");}));
+    card.appendChild(acts);
+    if(R.length>1){var th=el("div","then"); th.appendChild(document.createTextNode("If he goes: ")); R.slice(1,4).forEach(function(x,i){ if(i) th.appendChild(document.createTextNode(", ")); th.appendChild(el("b",null,x.p.n));}); card.appendChild(th);}
+    nx.appendChild(card);
+  }
+  var list=document.getElementById("list"), title=document.getElementById("listTitle"), rows=[]; list.textContent="";
+  var q=query.trim().toLowerCase();
+  if(q){
+    title.textContent="Search";
+    rows=P.filter(function(p){return p.n.toLowerCase().indexOf(q)>=0||p.id.toLowerCase()===q||p.sc.toLowerCase().indexOf(q)>=0;}).map(function(p){return {p:p};});
+  }else if(view==="best"){ title.textContent="Best for me"; rows=R.slice(0,30); }
+  else if(view==="all"){ title.textContent="Everyone still available, by score"; rows=P.filter(function(p){return avail(p.id);}).sort(function(a,b){return (b.tot===null?-1:b.tot)-(a.tot===null?-1:a.tot);}).map(function(p){return {p:p};}); }
+  else if(view==="condit"){ title.textContent="Condit kids"; rows=P.filter(function(p){return p.condit;}).sort(function(a,b){return (status(a.id)?1:0)-(status(b.id)?1:0)||(b.tot===null?-1:b.tot)-(a.tot===null?-1:a.tot);}).map(function(p){return {p:p};}); }
+  else if(view==="mine"){ title.textContent="My team"; rows=P.filter(function(p){return status(p.id)==="m";}).map(function(p){return {p:p};}); }
+  else { title.textContent="Taken"; rows=P.filter(function(p){return status(p.id)==="t";}).map(function(p){return {p:p};}); }
+  if(!rows.length) list.appendChild(el("div","empty",q?"No player matches that.":"Nobody here yet."));
+  rows.forEach(function(x){list.appendChild(row(x.p,view==="best"&&!q?x.tag:""));});
+  var rs=document.getElementById("reset"); rs.textContent=resetArmed?"Tap again to erase every pick":"Reset the whole draft";
+}
+document.getElementById("q").addEventListener("input",function(e){query=e.target.value; render();});
+document.getElementById("undo").addEventListener("click",undo);
+document.getElementById("reset").addEventListener("click",function(){
+  if(!resetArmed){resetArmed=true; render(); setTimeout(function(){resetArmed=false; render();},4000); return;}
+  resetArmed=false; st={p:{},h:[],t:0}; save(); render();
+});
+render();
+startSync();
+})();
+</script>
+</body>
+</html>
